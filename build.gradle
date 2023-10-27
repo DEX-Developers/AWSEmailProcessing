@@ -12,6 +12,23 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.1'
+    implementation 'software.amazon.awssdk:s3:2.20.109'
+//    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+//    implementation 'com.amazonaws:aws-java-sdk:1.12.561'
+    implementation "org.json:json:20230618"
+    implementation 'software.amazon.awssdk:sesv2:2.20.109'
+    implementation 'software.amazon.awssdk:events:2.0.0-preview-11'
+    implementation 'software.amazon.awssdk:lambda:2.20.109'
+    implementation 'com.amazonaws:aws-java-sdk-sesv2:1.12.512'
+    implementation 'org.apache.james:apache-mime4j-core:0.8.9'
+    implementation 'org.apache.james:apache-mime4j:0.8.9'
+    implementation 'javax.mail:javax.mail-api:1.6.2'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+
+
+
 }
 
 test {

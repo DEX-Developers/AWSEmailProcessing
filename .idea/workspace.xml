@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="" />
+    <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/events/event.json" beforeDir="false" afterPath="$PROJECT_DIR$/events/event.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/template.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,8 +27,55 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AWSEmailProcessing" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AWSEmailProcessing" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AWSEmailProcessing" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AWSEmailProcessing" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build setup" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2VlpMvM9s9NlD5tCEUFH9pg5IqO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -24,14 +83,178 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/apikhtovnikov/IdeaProjects/AWSEmailProcessing/template.yaml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\apikhtovnikov\IdeaProjects\AWSEmailProcessing" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\apikhtovnikov\IdeaProjects\AWSEmailProcessing" />
+      <recent name="C:\Users\apikhtovnikov\IdeaProjects\AWSEmailProcessing\AWSEmailProcessingFn" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.AWSEmailProcessing [init]">
+    <configuration name="AWSEmailProcessing [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="assemble" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AWSEmailProcessing [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildDependents" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AWSEmailProcessing [classes]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="classes" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AWSEmailProcessing [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AWSEmailProcessing [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="init" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="[Local] Main.handleRequest" type="aws.lambda" factoryName="Local" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-west-2" />
+      <option name="debugHost" value="localhost" />
+      <option name="architecture" value="arm64" />
+      <option name="environmentVariables">
+        <map />
+      </option>
+      <option name="handler" value="com.dex.Main::handleRequest" />
+      <option name="image" value="false" />
+      <option name="logicalFunctionName" />
+      <option name="memorySize" value="128" />
+      <option name="pathMappings">
+        <list />
+      </option>
+      <option name="platform" />
+      <option name="runtime" value="java11" />
+      <option name="templateFile" />
+      <option name="timeout" value="23" />
+      <option name="useTemplate" value="false" />
+      <option name="input" value="{Records=[{eventSource=aws:ses, eventVersion=1.0, ses={mail={timestamp=2023-10-05T16:01:19.904Z, source=apikhtovnikov@dex.com, messageId=nohcv4bgf2cfr6dvihn4koia3nu4nh4tv6e0uc81, destination=[jmarktest@dex.com], headersTruncated=false, headers=[{name=Return-Path, value=&lt;apikhtovnikov@dex.com&gt;}, {name=Received, value=from DM4PR02CU001.outbound.protection.outlook.com (mail-centralusazlp17012022.outbound.protection.outlook.com [40.93.13.22]) by inbound-smtp.us-west-2.amazonaws.com with SMTP id nohcv4bgf2cfr6dvihn4koia3nu4nh4tv6e0uc81 for jmarktest@dex.com; Thu, 05 Oct 2023 16:01:19 +0000 (UTC)}, {name=X-SES-Spam-Verdict, value=PASS}, {name=X-SES-Virus-Verdict, value=PASS}, {name=Received-SPF, value=pass (spfCheck: domain of dex.com designates 40.93.13.22 as permitted sender) client-ip=40.93.13.22; envelope-from=apikhtovnikov@dex.com; helo=mail-centralusazlp17012022.outbound.protection.outlook.com;}, {name=Authentication-Results, value=amazonses.com; spf=pass (spfCheck: domain of dex.com designates 40.93.13.22 as permitted sender) client-ip=40.93.13.22; envelope-from=apikhtovnikov@dex.com; helo=mail-centralusazlp17012022.outbound.protection.outlook.com; dkim=pass header.i=@dex.com; dmarc=pass header.from=dex.com;}, {name=X-SES-RECEIPT, value=AEFBQUFBQUFBQUFGS3FFRlNTV2JYVXF1azZJYTRWN05ZWEtKbXgzakNFS0NoTEg5UTBBZ3hUYkF5V3BXck9ZdDRxeTRyNHRuN1RtSzZ6ZVB0bHlGM0EvQnNxS2hDYVlSNitHZ3QrWFFZWlR6NWhWN0t0NURvYUtoWmJ6WWpGTGZPSkpBSlA0SDBoWldDZnVoU2JOSHpjaGtIVk5BbHVkdW9iWW55SndGMVZMbEMwaktsdERvOVhodG82ZTZ2SXZHcy9mS3U2NHIxS1JtYkZFTlQ1Nnk4ejVNZGhZZmF2Z0hudlh4QWZhMCtlMGcySmNoeVRLTFIvNFVXTktpajNoc1FJTnplOXl1aCtGeVdPbU84RU1WTjF2bTZyMHYvSm5iTWF0RHpBS3FjNXZwa2hSbFNoYlBoUWc9PQ==}, {name=X-SES-DKIM-SIGNATURE, value=a=rsa-sha256; q=dns/txt; b=dsf3DzLhi3i+MMIWMuVnxqO3nsAY0DV8tcCTzyvqGdMtGHixr1+45hqV+eCHOmbz21XfdrHcWePntQ9/NUSlyYtoTmqx5GLXNG2037NtEY1pu6UBXqNG2eEzW69VDmDMIHt/EkiSk6lwNOl1jQQgjzYlrDn1NHOaxv46LW9TSE0=; c=relaxed/simple; s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1696521681; v=1; bh=pBQBoHl9NmAZSbSJMhspRIBhWgjk/fYoKwu7shtjqfA=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;}, {name=ARC-Seal, value=i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none; b=Km3s/3j94nRXdAOOv13YNB9IyBA8mU2sjDWIENpoeUSWfuRO8DmprZjtG3domhImwT4CZqmbfPJoXYLJKjaBN6w4iKFIwQxdRJh6b2PC9uCPNbeiQaoUFhjMRr+3xiUA/Hvvf2vY90+YxL5T0BhzyxXkU2aym5Tl6W/ucSbJGbteuxMtUdzsW5wYx3Qbm67xlymh0UeSWcvctulRGNDVcJo6PcYLrYAvQvQiQxrU7nIys1bnUKwXu0o29iPeSDpEpizYijn4cvfT47ib5PBprdMIsT62BnFYor6PKQO+/5TK5xB9xdXM5vxR+myT6NAo0i/22HwjkiZaP0r8f/k/7w==}, {name=ARC-Message-Signature, value=i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1; bh=pBQBoHl9NmAZSbSJMhspRIBhWgjk/fYoKwu7shtjqfA=; b=Iw2yI4q94agajrfSiWnPVLV8Ez1vj6eTggI/wQ/IGHSlkNC1K2LoNfFdi5mEtiQQu2Zr1UK6TIvJHwo6XJNyZwj6jD9oO3lCeODW5n75DiimhhMmsnoUxxbAMlJoLe6QBcrutKxu+EV41EbwF9t+HguAoQHuRD9/kWxuZgr4rZSR3WwkON3d2VEO+kbj9Kk0/nXGOnqdqF5Ti0hck4Z/y9cN7kZPi9ucfGxg+KLhW5IYMfokac+g9dLndPHSwzb5aKH99o28LqVEMqfT2Z48cR0lnFz8f6TWjXzAxC5f2WjbvAHTdniWuhBdWWVhVLAw1mhGxNwwKYP6BdeShmo2iQ==}, {name=ARC-Authentication-Results, value=i=1; mx.microsoft.com 1; spf=pass smtp.mailfrom=dex.com; dmarc=pass action=none header.from=dex.com; dkim=pass header.d=dex.com; arc=none}, {name=DKIM-Signature, value=v=1; a=rsa-sha256; c=relaxed/relaxed; d=dex.com; s=selector2; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=pBQBoHl9NmAZSbSJMhspRIBhWgjk/fYoKwu7shtjqfA=; b=XcE9vUyjK2OEloj5Noh9TVaM1ZmeqaAltURtDobnNv2bcTJcU7crjnAUZi5Ej7yVobHHE9bHkJhHl+AYkDGPuRdewAQaOeMaZT5IVt4xaq5eleVhsKtiB/qsuypPzNrtyJ6kBP4GtZhNE7ejxnQG+dH/IIcIxtd+9w4NAoLM/LzWvGPWRmLP2O6tUz1idFfxjzmecnuwugAhA/UhUjMQo2fbZDMIQH/R3hU1ATTG6B+w9zZdlsP9ZO6yLsmHUt4gcIse3190yhLYUXIDoQd/OX136DOk32fcvFE2JeVguUBQ30YbVSOzda9EqRziOcEHk2z12JNQJwztMJlPQN8y5w==}, {name=Received, value=from BY5PR05MB7155.namprd05.prod.outlook.com (2603:10b6:a03:1bf::24) by PH0PR05MB10061.namprd05.prod.outlook.com (2603:10b6:510:294::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.28; Thu, 5 Oct 2023 16:01:16 +0000}, {name=Received, value=from BY5PR05MB7155.namprd05.prod.outlook.com ([fe80::a596:c262:7461:aa2e]) by BY5PR05MB7155.namprd05.prod.outlook.com ([fe80::a596:c262:7461:aa2e%6]) with mapi id 15.20.6838.033; Thu, 5 Oct 2023 16:01:16 +0000}, {name=Content-Type, value=multipart/mixed; boundary=&quot;_000_BY5PR05MB71558A839828A443DD29ACFBAFCAABY5PR05MB7155namp_&quot;}, {name=From, value=Aleksei Pikhtovnikov &lt;apikhtovnikov@dex.com&gt;}, {name=To, value=&quot;jmarktest@dex.com&quot; &lt;jmarktest@dex.com&gt;}, {name=Subject, value=test 10052023-0901}, {name=Thread-Topic, value=test 10052023-0901}, {name=Thread-Index, value=Adn3pSih7ygFsIScTxW4ypHvvgWpng==}, {name=Date, value=Thu, 5 Oct 2023 16:01:15 +0000}, {name=Message-ID, value=&lt;BY5PR05MB71558A839828A443DD29ACFBAFCAA@BY5PR05MB7155.namprd05.prod.outlook.com&gt;}, {name=Accept-Language, value=en-US}, {name=Content-Language, value=en-US}, {name=X-MS-Has-Attach, value=yes}, {name=X-MS-TNEF-Correlator, value=&lt;BY5PR05MB71558A839828A443DD29ACFBAFCAA@BY5PR05MB7155.namprd05.prod.outlook.com&gt;}, {name=authentication-results, value=dkim=none (message not signed) header.d=none;dmarc=none action=none header.from=dex.com;}, {name=x-ms-publictraffictype, value=Email}, {name=x-ms-traffictypediagnostic, value=BY5PR05MB7155:EE_|PH0PR05MB10061:EE_}, {name=x-ms-office365-filtering-correlation-id, value=76bc48bc-ad62-4340-8957-08dbc5bc4e3a}, {name=x-microsoft-antispam, value=BCL:0;}, {name=x-microsoft-antispam-message-info, value=mHQzWff2G1PzdJCOuyPHvfmapAgYMar4ePNeo/impU80pO+coW8foBe4dDFkZ5Ge8mZINnWqsziVbgoWz57hoywhkZJF/G9huobGCJf/GmHGgusezNjEY44c/doQ/Ls2NrzxBPn+zmOcE8fY0m9YBZmyS4LM2DyT0ap2U+ZkBK8wG2+VljhnzonTPhIJgHUGV3NDlLh15xq5bJznw8VZvcGkMW9FUdmBokWqXxpVbYNFbPrub7hgHSrTFacS5DNQ7E/ddbSoZl+lwoSDVjHHXyfpCAfRF7SEyaJdOoQef7gmbkKXs17mSsy2T3m4Tu3nKkRpyuHHR3RUP8najP6uIeieHVBYnP28bNeiIu5w9YC5E3HA/3fbUijvPfdIpfTWkqRmX94hdP571S+J2iFD11jGsCsCuiWUBw4krJFkFjuWpaZb5QDFXb82fQpXPGvYVXKEZleG9UP5F/XsEPg8htwy3oXWID8A2hR6jJM5rbj1mbtIaizyXNzDPlvCrrdcLMQEqj3vXUKymiAn7aiMBb1frlyJZEf48XNePzaoo31rxtMP8gPJs2yGlguz1UccHxLzlkBs3BlghUvV5KKg7Y2qjhJz6unTHaKgMb0EY7N58i9uZqwZ3+ZL5yvQr0+99xM4I6bkTWYlW3zmOfhyWA==}, {name=x-forefront-antispam-report, value=CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR05MB7155.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:;DIR:INT;}, {name=MIME-Version, value=1.0}, {name=X-OriginatorOrg, value=dex.com}, {name=X-MS-Exchange-CrossTenant-AuthAs, value=Internal}, {name=X-MS-Exchange-CrossTenant-AuthSource, value=BY5PR05MB7155.namprd05.prod.outlook.com}, {name=X-MS-Exchange-CrossTenant-Network-Message-Id, value=76bc48bc-ad62-4340-8957-08dbc5bc4e3a}, {name=X-MS-Exchange-CrossTenant-originalarrivaltime, value=05 Oct 2023 16:01:15.9449 (UTC)}, {name=X-MS-Exchange-CrossTenant-fromentityheader, value=Hosted}, {name=X-MS-Exchange-CrossTenant-id, value=1a95d10e-e009-4fe6-8878-4f4b09b2c51b}, {name=X-MS-Exchange-CrossTenant-mailboxtype, value=HOSTED}, {name=X-MS-Exchange-CrossTenant-userprincipalname, value=kYmTXv6Yljv/expU4fTlu1gYVILkHgrjGPxyjro+k13bgnfRgz3wpfAnPuu2dyrrEaAZKD+DvvFNW4jo6Zdf1Q==}, {name=X-MS-Exchange-Transport-CrossTenantHeadersStamped, value=PH0PR05MB10061}, {name=X-MS-Exchange-CrossPremises-AuthAs, value=Internal}, {name=X-MS-Exchange-CrossPremises-AuthMechanism, value=04}, {name=X-MS-Exchange-CrossPremises-AuthSource, value=BY5PR05MB7155.namprd05.prod.outlook.com}, {name=X-MS-Exchange-CrossPremises-TransportTrafficType, value=Email}, {name=X-MS-Exchange-CrossPremises-SCL, value=1}, {name=X-MS-Exchange-CrossPremises-messagesource, value=StoreDriver}, {name=X-MS-Exchange-CrossPremises-BCC, value=}, {name=X-MS-Exchange-CrossPremises-originalclientipaddress, value=47.181.96.194}, {name=X-MS-Exchange-CrossPremises-transporttraffictype, value=Email}, {name=X-MS-Exchange-CrossPremises-antispam-scancontext, value=DIR:Originating;SFV:SKI;SKIP:0;}, {name=X-MS-Exchange-CrossPremises-processed-by-journaling, value=Journal Agent}, {name=X-OrganizationHeadersPreserved, value=PH0PR05MB10061.namprd05.prod.outlook.com}], commonHeaders={returnPath=apikhtovnikov@dex.com, from=[Aleksei Pikhtovnikov &lt;apikhtovnikov@dex.com&gt;], date=Thu, 5 Oct 2023 16:01:15 +0000, to=[&quot;jmarktest@dex.com&quot; &lt;jmarktest@dex.com&gt;], messageId=&lt;BY5PR05MB71558A839828A443DD29ACFBAFCAA@BY5PR05MB7155.namprd05.prod.outlook.com&gt;, subject=test 10052023-0901}}, receipt={timestamp=2023-10-05T16:01:19.904Z, processingTimeMillis=1489, recipients=[jmarktest@dex.com], spamVerdict={status=PASS}, virusVerdict={status=PASS}, spfVerdict={status=PASS}, dkimVerdict={status=PASS}, dmarcVerdict={status=PASS}, action={type=Lambda, topicArn=arn:aws:sns:us-west-2:073628739062:JmarkSNS, functionArn=arn:aws:lambda:us-west-2:073628739062:function:AWSEmailProcessing, invocationType=Event}}}}]}" />
+      <option name="inputIsFile" value="false" />
+      <sam>
+        <option name="additionalBuildArgs" value="" />
+        <option name="additionalLocalArgs" value="" />
+        <option name="buildInContainer" value="false" />
+        <option name="dockerNetwork" value="" />
+        <option name="skipImagePull" value="false" />
+      </sam>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.AWSEmailProcessing [init]" />
+        <item itemvalue="Gradle.AWSEmailProcessing [classes]" />
+        <item itemvalue="Gradle.AWSEmailProcessing [assemble]" />
+        <item itemvalue="Gradle.AWSEmailProcessing [buildDependents]" />
+        <item itemvalue="Gradle.AWSEmailProcessing [clean]" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -40,8 +263,55 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1695420478955</updated>
-      <workItem from="1695420480699" duration="3000" />
+      <workItem from="1695420480699" duration="1080000" />
+      <workItem from="1695422144193" duration="598000" />
+      <workItem from="1695673965606" duration="3559000" />
+      <workItem from="1695677879783" duration="1347000" />
+      <workItem from="1695679277767" duration="1275000" />
+      <workItem from="1695680770879" duration="7047000" />
+      <workItem from="1695940234089" duration="2462000" />
+      <workItem from="1696372366105" duration="1302000" />
+      <workItem from="1696374499322" duration="606000" />
+      <workItem from="1696440588458" duration="580000" />
+      <workItem from="1696441188304" duration="5713000" />
+      <workItem from="1696520260442" duration="893000" />
+      <workItem from="1696521230240" duration="4706000" />
+      <workItem from="1696528561856" duration="6319000" />
+      <workItem from="1696539263769" duration="584000" />
+      <workItem from="1696539921823" duration="886000" />
+      <workItem from="1696542171524" duration="584000" />
+      <workItem from="1696542775507" duration="13013000" />
+      <workItem from="1696627044214" duration="767000" />
+      <workItem from="1696627828851" duration="3710000" />
+      <workItem from="1696952661535" duration="45000" />
+      <workItem from="1696971474396" duration="147000" />
+      <workItem from="1697056160811" duration="1457000" />
+      <workItem from="1697495594504" duration="8000" />
+      <workItem from="1697556052208" duration="10000" />
+      <workItem from="1697581760211" duration="10000" />
+      <workItem from="1697748122725" duration="7167000" />
+      <workItem from="1697837022656" duration="545000" />
+      <workItem from="1697837581000" duration="7620000" />
+      <workItem from="1698078875814" duration="18845000" />
+      <workItem from="1698162592809" duration="17014000" />
+      <workItem from="1698264989371" duration="2860000" />
+      <workItem from="1698421579006" duration="2046000" />
+      <workItem from="1698438947168" duration="1942000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
