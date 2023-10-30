@@ -5,6 +5,7 @@ package com.dex;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
@@ -15,6 +16,7 @@ import software.amazon.awssdk.services.sesv2.SesV2Client;
 import software.amazon.awssdk.services.sesv2.model.*;
 import software.amazon.awssdk.services.sesv2.model.RawMessage;
 import org.apache.commons.io.IOUtils;
+
 import javax.mail.*;
 import javax.mail.BodyPart;
 import javax.mail.Header;
@@ -60,95 +62,151 @@ public class Main implements RequestHandler<SNSEvent, Context> {
     private final SesV2Client ses = SesV2Client.create();
     private String fromEmail = "jmark_processor@dex.com";  // Change this
     private String from;
+    private String subject = "";
+    private String contentType = "";
+    private JSONArray headers = new JSONArray();
+    private JSONObject parsedSNS;
+    private String spamVerdict;
+    private String virusVerdict;
+    private String spfVerdict;
+    private String dkimVerdict;
+    private String dmarcVerdict;
+    boolean toForward;
 
-    @Override
-    public Context handleRequest(SNSEvent event, Context context) {
-        String spamVerdict;
-        String virusVerdict;
-        String spfVerdict;
-        String dkimVerdict;
-        String dmarcVerdict;
+    /*Keywords definition block*/
+    /*Define subject keywords set*/
+    HashSet<String> subjectKeywords = new HashSet<>();
 
+    /*Lambda initialization*/
+    public Main() {
+        subjectKeywords.add("undeliverable");
 
+    }
 
-//        System.out.println(event.toString());
-
-        System.out.println(event.getRecords().get(0).getSNS().getMessage());
-        JSONObject parsedSNS = new JSONObject(event.getRecords().get(0).getSNS().getMessage());
-        System.out.println(parsedSNS.getJSONObject("mail").getString("messageId"));
-        String bucketName = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("bucketName");
-        String objectKey = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("objectKey");
-
+    private void initialize(SNSEvent event) {
+        parsedSNS = new JSONObject(event.getRecords().get(0).getSNS().getMessage());
         spamVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("spamVerdict").getString("status");
         virusVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("virusVerdict").getString("status");
         spfVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("spfVerdict").getString("status");
         dkimVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("dkimVerdict").getString("status");
         dmarcVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("dmarcVerdict").getString("status");
+//        subject = parsedSNS.getJSONObject("mail").getJSONObject("commonHeaders").getString("subject");
+        headers = parsedSNS.getJSONObject("mail").getJSONArray("headers");
+        for (int i = 0; i<headers.length(); i++){
+            JSONObject header = headers.getJSONObject(i);
+            String name = header.getString("name");
+            String value = header.getString("value");
+            switch (name){
+                case "Content-Type":
+                    contentType = value;
+                    break;
+                case "Subject":
+                    subject = value;
+                    break;
+                case "From":
+                    from = value;
+                    break;
 
-        from = parsedSNS.getJSONObject("mail").getJSONObject("commonHeaders").getJSONArray("from").toList().get(0).toString();
+            }
+        }
 
-        String prependVerdicts = new String("Spam: " + spamVerdict + " \r\n" +
-                "Virus: " + virusVerdict + " \r\n" +
-                "SPF: " + spfVerdict + " \r\n" +
-                "DKIM: " + dkimVerdict + " \r\n" +
-                "DMARC: " + dmarcVerdict + " \r\n" +
-                "====================================================================\r\n");
+        toForward = subjectCheckToForward()
+                && contentTypeCheckToForward();
+
+        System.out.println(toForward);
+    }
+    /*End of Lambda initialization*/
+
+
+    @Override
+    public Context handleRequest(SNSEvent event, Context context) {
 
         try {
-            // Fetch email content from S3
-            GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectKey).build();
-            InputStream is = s3.getObject(getObjectRequest);
-            byte[] emailContentBytes = prependValidationResults(is, prependVerdicts);
-            if (emailContentBytes == null){
-                emailContentBytes = is.readAllBytes();
-            }
+            initialize(event);
+        } catch (Exception e) {
+            System.out.println("ERROR: failure to initialize function");
+            e.printStackTrace();
+        }
+
+            /*Check if message meet with forwarding criteria. Proceed with forwarding so*/
+            if (toForward) {
+
+
+//        System.out.println(event.toString());
+
+                System.out.println(event.getRecords().get(0).getSNS().getMessage());
+
+//        JSONObject parsedSNS = new JSONObject(event.getRecords().get(0).getSNS().getMessage());
+                System.out.println(parsedSNS.getJSONObject("mail").getString("messageId"));
+                String bucketName = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("bucketName");
+                String objectKey = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("objectKey");
+
+
+//                from = parsedSNS.getJSONObject("mail").getJSONObject("commonHeaders").getJSONArray("from").toList().get(0).toString();
+
+                String prependVerdicts = new String("Spam: " + spamVerdict + " \r\n" +
+                        "Virus: " + virusVerdict + " \r\n" +
+                        "SPF: " + spfVerdict + " \r\n" +
+                        "DKIM: " + dkimVerdict + " \r\n" +
+                        "DMARC: " + dmarcVerdict + " \r\n" +
+                        "====================================================================\r\n");
+
+                try {
+                    // Fetch email content from S3
+                    GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectKey).build();
+                    InputStream is = s3.getObject(getObjectRequest);
+                    byte[] emailContentBytes = prependValidationResults(is, prependVerdicts);
+                    if (emailContentBytes == null) {
+                        emailContentBytes = is.readAllBytes();
+                    }
 //            System.out.println("After Validation: " + new String(emailContentBytes));
 //            String emailContent = new String(emailContentBytes, StandardCharsets.UTF_8);
 
 //            assert emailContentBytes != null;
-            SdkBytes rawInBytes = SdkBytes.fromByteArray(emailContentBytes);
+                    SdkBytes rawInBytes = SdkBytes.fromByteArray(emailContentBytes);
 
-            RawMessage rawMessage = RawMessage.builder()
-                    .data(rawInBytes)
-                    .build();
+                    RawMessage rawMessage = RawMessage.builder()
+                            .data(rawInBytes)
+                            .build();
 
-            EmailContent rawContent = EmailContent.builder()
-                    .raw(rawMessage)
-                    .build();
+                    EmailContent rawContent = EmailContent.builder()
+                            .raw(rawMessage)
+                            .build();
 
 
-            // Forward email using SES v2
+                    // Forward email using SES v2
 //            forwardEmail(emailContent);
-            forwardEmail(rawContent, from);
+                    if (toForward) {
+                        forwardEmail(rawContent, from);
+                    }
+                } catch (Exception e) {
+                    System.out.println("ERROR in handle request");
+                    e.printStackTrace();
+                }
+            }
 
-        } catch (Exception e) {
-            System.out.println("ERROR in handle request");
-            e.printStackTrace();
+            return context;
         }
 
+        private void forwardEmail (EmailContent emailContent, String from){
 
-        return context;
-    }
-
-    private void forwardEmail(EmailContent emailContent, String from) {
-
-        HashSet<String> toEmail = new HashSet<>();    // Change this
+            HashSet<String> toEmail = new HashSet<>();    // Change this
 //        toEmail.add("apikhtovnikov@dex.com");
 //        toEmail.add("dexmailchecker-AWSSES@srv1.mail-tester.com");
-        toEmail.add("jmark@dex.com");
-        toEmail.add("apikhtovnikov@dex.com");
-        SendEmailRequest request = SendEmailRequest.builder()
-                .content(emailContent)
-                .feedbackForwardingEmailAddress("aws_bounces@dex.com")
-                .replyToAddresses(from)
-                .fromEmailAddress(fromEmail)
-                .destination(d -> d.toAddresses(toEmail))
-                .build();
-        System.out.println(request.toString());
+            toEmail.add("jmark@dex.com");
+            toEmail.add("apikhtovnikov@dex.com");
+            SendEmailRequest request = SendEmailRequest.builder()
+                    .content(emailContent)
+                    .feedbackForwardingEmailAddress("aws_bounces@dex.com")
+//                .replyToAddresses(from)
+                    .fromEmailAddress(fromEmail)
+                    .destination(d -> d.toAddresses(toEmail))
+                    .build();
+            System.out.println(request.toString());
 
 //        System.out.println(request.toString());
 //        System.out.println(request.fromEmailAddress() + request.replyToAddresses().toString());
-        ses.sendEmail(request);
+            ses.sendEmail(request);
 ////        SendEmailRequest request = SendEmailRequest.builder()
 ////                .fromEmailAddress(fromEmail)
 ////                .
@@ -177,44 +235,46 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 //                .build();
 //
 //        ses.sendEmail(request);
-    }
+        }
 
-    private Part prependValidationResultsToPart(Part part, String validationResults) throws IOException, MessagingException {
-        System.out.println("Checking multipart");
-        if (part.isMimeType("multipart/*")) {
-            System.out.println("We in multipart 'if'");
-            MimeMultipart multipart = (MimeMultipart) part.getContent();
-            System.out.println(multipart.getCount());
-            for (int i = 0; i < multipart.getCount(); i++) {
-                prependValidationResultsToPart(multipart.getBodyPart(i), validationResults);
+        private Part prependValidationResultsToPart (Part part, String validationResults) throws
+        IOException, MessagingException {
+            System.out.println("Checking multipart");
+            if (part.isMimeType("multipart/*")) {
+                System.out.println("We in multipart 'if'");
+                MimeMultipart multipart = (MimeMultipart) part.getContent();
+                System.out.println(multipart.getCount());
+                for (int i = 0; i < multipart.getCount(); i++) {
+                    prependValidationResultsToPart(multipart.getBodyPart(i), validationResults);
+                }
+            } else if (part.isMimeType("text/plain")) {
+                System.out.println("We in text/plain");
+                String content = part.getContent().toString();
+//            System.out.println(content);
+
+                part.setContent(validationResults + content, "text/plain");
+
+            } else if (part.isMimeType("text/html")) {
+                System.out.println("We in text/html");
+                String content = part.getContent().toString();
+//            System.out.println(content);
+                String htmpValidation = validationResults;
+                htmpValidation = htmpValidation.replace("PASS", "<span style=\"color:green\">PASS</span>");
+                htmpValidation = htmpValidation.replace("FAIL ", "<span style=\"color:red\">FAIL</span>");
+                htmpValidation = htmpValidation.replace("GRAY", "<span style=\"color:orange\">GRAY</span>");
+                htmpValidation = htmpValidation.replace("\r\n", "<br>");
+
+
+                part.setContent(htmpValidation + content, "text/html");
             }
-        } else if (part.isMimeType("text/plain")) {
-            System.out.println("We in text/plain");
-            String content = part.getContent().toString();
-//            System.out.println(content);
 
-            part.setContent(validationResults + content,"text/plain");
+            return part;
+        }
 
-        }else if (part.isMimeType("text/html")) {
-            System.out.println("We in text/html");
-            String content = part.getContent().toString();
-//            System.out.println(content);
-            String htmpValidation = validationResults;
-            htmpValidation = htmpValidation.replace("PASS", "<span style=\"color:green\">PASS</span>");
-            htmpValidation = htmpValidation.replace("FAIL ", "<span style=\"color:red\">FAIL</span>");
-            htmpValidation = htmpValidation.replace("GRAY", "<span style=\"color:orange\">GRAY</span>");
-            htmpValidation = htmpValidation.replace("\r\n", "<br>");
-
-
-            part.setContent(htmpValidation + content,"text/html");}
-
-        return part;
-    }
-
-    private byte[] prependValidationResults(InputStream rawMessage, String validationResults) {
-        try {
-            Session session = Session.getDefaultInstance(new java.util.Properties());
-            MimeMessage mimeMessage = new MimeMessage(session, rawMessage);
+        private byte[] prependValidationResults (InputStream rawMessage, String validationResults){
+            try {
+                Session session = Session.getDefaultInstance(new java.util.Properties());
+                MimeMessage mimeMessage = new MimeMessage(session, rawMessage);
 
 //            Enumeration<Header> headers = mimeMessage.getAllHeaders();
 //            while (headers.hasMoreElements()) {
@@ -224,8 +284,8 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 //            mimeMessage.removeHeader("From");
 //            mimeMessage.removeHeader("Received-SPF:");
 //            mimeMessage.removeHeader("Authentication-Results");
-            mimeMessage.setHeader("Return-Path", "aws_bounces@dex.com");
-            mimeMessage.setSubject("[OrigFrom: " + from + " ] " + mimeMessage.getSubject());
+                mimeMessage.setHeader("Return-Path", "aws_bounces@dex.com");
+                mimeMessage.setSubject("[OrigFrom: " + from + " ] " + mimeMessage.getSubject());
 //            mimeMessage.setHeader("From", fromEmail);
 
 //            mimeMessage.removeHeader("To");
@@ -233,185 +293,39 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 //            mimeMessage.setHeader("To", "dexmailchecker-AWSSES@srv1.mail-tester.com");
 //            System.out.println("FROM MIME " + mimeMessage.getHeader("From", null));
 
-            prependValidationResultsToPart(mimeMessage, validationResults);
-            mimeMessage.saveChanges();
+                prependValidationResultsToPart(mimeMessage, validationResults);
+                mimeMessage.saveChanges();
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            mimeMessage.writeTo(baos);
-            return baos.toByteArray();
-        } catch (Exception e) {
-            System.out.println("ERROR: Failed to parse raw message");
-            e.printStackTrace();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                mimeMessage.writeTo(baos);
+                return baos.toByteArray();
+            } catch (Exception e) {
+                System.out.println("ERROR: Failed to parse raw message");
+                e.printStackTrace();
+            }
+
+            System.out.println("No mime detected");
+            return null;
         }
 
-        System.out.println("No mime detected");
-        return null;
+        private boolean subjectCheckToForward () {
+
+            for (String sbj : subjectKeywords
+            ) {
+                if (subject.toLowerCase().contains(sbj)) {
+                    return false;
+                }
+            }
+
+
+            return true;
+        }
+        private boolean contentTypeCheckToForward () {
+            if (contentType.toLowerCase().contains("report")){
+                return false;
+            }
+        return true;
+        }
+
+
     }
-
-//    private void prependValidationResultsToEntity(Entity entity, String validationResults, BasicBodyFactory bodyFactory) throws IOException {
-//        if (entity.isMultipart()) {
-//            System.out.println("multipart detection");
-//            Multipart multipart = (Multipart) entity.getBody();
-//            for (Entity part : multipart.getBodyParts()) {
-//                prependValidationResultsToEntity(part, validationResults, bodyFactory);
-//            }
-//        } else if (entity.getMimeType().startsWith("text/plain") || entity.getMimeType().startsWith("text/html")) {
-//            System.out.println(entity.getMimeType());
-//            TextBody originalBody = (TextBody) entity.getBody();
-//            String originalText = IOUtils.toString(originalBody.getReader());
-//            TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//            entity.removeBody();
-//            entity.setBody(textBody);
-//        }
-//    }
-//
-//    private byte[] prependValidationResults(InputStream rawMessage, String validationResults) {
-//        DefaultMessageBuilder messageBuilder = new DefaultMessageBuilder();
-//
-//        try {
-//            Message mimeMessage = messageBuilder.parseMessage(rawMessage);
-//            Header header = mimeMessage.getHeader();
-////            Field fromField = header.getField("From");
-//            HashMap<String, List<Field>> headersList = new HashMap<>(header.getFieldsAsMap());
-//            for (Map.Entry<String, List<Field>> entry:
-//                    headersList.entrySet()) {
-//                System.out.println(entry.toString());
-//            }
-//
-//            header.setField(DefaultFieldParser.parse(FieldName.FROM + ": " + fromEmail));
-////            header.removeFields("From");
-////            header.addField;
-////            mimeMessage.setHeader("From", fromEmail);
-//            System.out.println("FROM MIME " + mimeMessage.getFrom());
-//
-//
-//            BasicBodyFactory bodyFactory = new BasicBodyFactory();
-//
-//            prependValidationResultsToEntity(mimeMessage, validationResults, bodyFactory);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            MessageWriter meos = new DefaultMessageWriter();
-//            meos.writeMessage(mimeMessage, baos);
-//            return baos.toByteArray();
-//        } catch (Exception e) {
-//            System.out.println("ERROR: Failed to parse raw message");
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("No mime detected");
-//        return null;
-//    }
-
-
-//    private byte[] prependValidationResults(InputStream rawMessage, String validationResults) {
-//        DefaultMessageBuilder messageBuilder = new DefaultMessageBuilder();
-//
-//        try {
-//            Message mimeMessage = messageBuilder.parseMessage(rawMessage);
-//            String mimeType = mimeMessage.getMimeType();
-//
-//            BasicBodyFactory bodyFactory = new BasicBodyFactory();
-//
-//            if (mimeMessage.isMultipart()) {
-//                Multipart multipart = (Multipart) mimeMessage.getBody();
-//                System.out.println("Multipart detected: " + multipart.toString());
-//
-//                for (Entity part : mimeMultipartParser(multipart)) {
-//                    System.out.println("We are in multipart cycle");
-//                    System.out.println(part.getMimeType());
-//                    if (part.getMimeType().equals("text/plain")|| part.getMimeType().equals("text/html")) {
-//                        TextBody originalBody = (TextBody) part.getBody();
-//                        String originalText = IOUtils.toString(originalBody.getReader());
-//                        TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//                        part.setBody(textBody);
-//                        System.out.println("We are in multipart cycle and if triggered");
-//                    }
-//                }
-//            } else if (mimeType.startsWith("text/plain") || mimeType.startsWith("text/html")) {
-//                System.out.println("Multipart not detected, but some mime detected");
-//                TextBody originalBody = (TextBody) mimeMessage.getBody();
-//                String originalText = IOUtils.toString(originalBody.getReader());
-//                TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//                mimeMessage.setBody(textBody);
-//            }
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            MessageWriter meos = new DefaultMessageWriter();
-//            meos.writeMessage(mimeMessage, baos);
-//            return baos.toByteArray();
-//        } catch (Exception e) {
-//            System.out.println("ERROR: Failed to parse raw message");
-//            e.printStackTrace();
-//            // Consider rethrowing the exception or returning a more meaningful error structure.
-//        }
-//        System.out.println("No mime detected");
-//
-//        return null;
-//    }
-//
-//    private HashSet<Entity> mimeMultipartParser (Multipart multipart){
-//        HashSet <Entity> result = new HashSet<Entity>();
-//        for (Entity part : multipart.getBodyParts()) {
-//            System.out.println("We are in multipart cycle");
-//            System.out.println(part.getMimeType());
-//            if (part.isMultipart()){
-//                System.out.println("Another multipart");
-//                result.addAll(Objects.requireNonNull(mimeMultipartParser((Multipart) part.getBody())));
-//            }else result.add(part);
-//
-//        }
-//        System.out.println(result.size());
-//        return result;
-//    }
-
-
-//    private byte[] prependValidationResults(InputStream rawMessage, String validationResults) {
-//        DefaultMessageBuilder messageBuilder = new DefaultMessageBuilder();
-////        ByteArrayInputStream inputStream = new ByteArrayInputStream(rawMessage.getBytes(StandardCharsets.UTF_8));
-//        try {
-//            Message mimeMessage = messageBuilder.parseMessage(rawMessage);
-//            // Check if the content type is text
-//            String mimeType = mimeMessage.getMimeType();
-//
-//            BasicBodyFactory bodyFactory = new BasicBodyFactory();
-//            if (mimeMessage.isMultipart()) {
-//                Multipart multipart = (Multipart) mimeMessage.getBody();
-//
-//                for (Entity part : multipart.getBodyParts()) {
-//                    String multiType = part.getMimeType();
-//
-//                    TextBody originalBody = (TextBody) part.getBody();
-//                    String originalText = IOUtils.toString(originalBody.getReader());
-//
-//                    if (multiType.equals("text/plain")) {
-//                        TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//                        part.setBody(textBody);
-//                    } else if (multiType.equals("text/html")) {
-//                        TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//                        part.setBody(textBody);
-//                    }
-//                }
-//
-//            }
-//
-//
-//            else if  (mimeType.equals("text/plain") || mimeType.equals("text/html")) {
-//                    TextBody originalBody = (TextBody) mimeMessage.getBody();
-//                    String originalText = originalBody.getReader().toString();
-//                    TextBody textBody = bodyFactory.textBody(validationResults + originalText, Charset.defaultCharset());
-//                    mimeMessage.setBody(textBody);
-//
-//                }
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            MessageWriter meos = new DefaultMessageWriter();
-//            meos.writeMessage(mimeMessage,baos);
-//            return baos.toByteArray();
-//        } catch (Exception e) {
-//            System.out.println("ERROR: Failed to parse raw message");
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-}
