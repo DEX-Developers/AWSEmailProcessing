@@ -326,6 +326,8 @@ public class Main implements RequestHandler<SNSEvent, Context> {
             for (String sbj : subjectKeywords
             ) {
                 if (subject.toLowerCase().contains(sbj)) {
+                    System.out.println("Subject: " + subject);
+                    System.out.println("Hit: " + sbj);
                     return false;
                 }
             }
