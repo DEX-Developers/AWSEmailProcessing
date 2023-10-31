@@ -79,7 +79,20 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 
     /*Lambda initialization*/
     public Main() {
+        /*Keywords for subject filtering*/
         subjectKeywords.add("undeliverable");
+        subjectKeywords.add("automatique");
+        subjectKeywords.add("not authori");
+        subjectKeywords.add("invalid number");
+        subjectKeywords.add("out of office");
+        subjectKeywords.add("automatic reply");
+        subjectKeywords.add("error");
+        subjectKeywords.add("automatica");
+        subjectKeywords.add("automatische");
+        subjectKeywords.add("not delivered");
+        subjectKeywords.add("autoreply");
+        subjectKeywords.add("failure");
+
 
     }
 
