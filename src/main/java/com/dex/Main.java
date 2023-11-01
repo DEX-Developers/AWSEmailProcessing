@@ -81,16 +81,16 @@ public class Main implements RequestHandler<SNSEvent, Context> {
     public Main() {
         /*Keywords for subject filtering*/
         subjectKeywords.add("undeliverable");
-        subjectKeywords.add("automatique");
+//        subjectKeywords.add("automatique");
         subjectKeywords.add("not authori");
         subjectKeywords.add("invalid number");
-        subjectKeywords.add("out of office");
+//        subjectKeywords.add("out of office");
         subjectKeywords.add("automatic reply");
         subjectKeywords.add("error");
-        subjectKeywords.add("automatica");
-        subjectKeywords.add("automatische");
+//        subjectKeywords.add("automatica");
+//        subjectKeywords.add("automatische");
         subjectKeywords.add("not delivered");
-        subjectKeywords.add("autoreply");
+//        subjectKeywords.add("autoreply");
         subjectKeywords.add("failure");
 
 
@@ -302,7 +302,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 //            mimeMessage.setHeader("From", fromEmail);
 
 //            mimeMessage.removeHeader("To");
-//            mimeMessage.setHeader("Reply-To", from);
+            mimeMessage.setHeader("Reply-To", from);
 //            mimeMessage.setHeader("To", "dexmailchecker-AWSSES@srv1.mail-tester.com");
 //            System.out.println("FROM MIME " + mimeMessage.getHeader("From", null));
 
@@ -337,10 +337,10 @@ public class Main implements RequestHandler<SNSEvent, Context> {
         }
         private boolean contentTypeCheckToForward () {
             if (contentType.toLowerCase().contains("report")){
+                System.out.println("Subject: " + subject);
+                System.out.println("Hit: " + contentType);
                 return false;
             }
         return true;
         }
-
-
     }
