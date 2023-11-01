@@ -85,7 +85,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
         subjectKeywords.add("not authori");
         subjectKeywords.add("invalid number");
 //        subjectKeywords.add("out of office");
-        subjectKeywords.add("automatic reply");
+//        subjectKeywords.add("automatic reply");
         subjectKeywords.add("error");
 //        subjectKeywords.add("automatica");
 //        subjectKeywords.add("automatische");

@@ -291,7 +291,7 @@
       <workItem from="1698264989371" duration="2860000" />
       <workItem from="1698421579006" duration="2046000" />
       <workItem from="1698438947168" duration="16417000" />
-      <workItem from="1698854511433" duration="936000" />
+      <workItem from="1698854511433" duration="2787000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -321,7 +321,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698768571276</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Exclude autoanswers from keyword list">
+      <created>1698859632101</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698859632101</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,6 +350,7 @@
     <MESSAGE value="Headers checks for avoid unnecesarry sending" />
     <MESSAGE value="Extend subject based keyword list to filter messages by keywords" />
     <MESSAGE value="Minor logging updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor logging updates" />
+    <MESSAGE value="Exclude autoanswers from keyword list" />
+    <option name="LAST_COMMIT_MESSAGE" value="Exclude autoanswers from keyword list" />
   </component>
 </project>
