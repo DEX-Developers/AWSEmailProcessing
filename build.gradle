@@ -21,6 +21,7 @@ dependencies {
     implementation 'software.amazon.awssdk:sesv2:2.20.109'
     implementation 'software.amazon.awssdk:events:2.0.0-preview-11'
     implementation 'software.amazon.awssdk:lambda:2.20.109'
+    implementation 'software.amazon.awssdk:sqs:2.20.109'
     implementation 'com.amazonaws:aws-java-sdk-sesv2:1.12.512'
     implementation 'org.apache.james:apache-mime4j-core:0.8.9'
     implementation 'org.apache.james:apache-mime4j:0.8.9'

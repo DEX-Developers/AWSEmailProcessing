@@ -1,101 +1,78 @@
 package com.dex;
 
-//import com.amazonaws.services.lambda.runtime.Context;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
 import software.amazon.awssdk.services.sesv2.model.*;
 import software.amazon.awssdk.services.sesv2.model.RawMessage;
-import org.apache.commons.io.IOUtils;
-
 import javax.mail.*;
-import javax.mail.BodyPart;
-import javax.mail.Header;
-import javax.mail.Multipart;
 import javax.mail.internet.*;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.Properties;
-
-import org.apache.james.mime4j.message.DefaultMessageBuilder;
-//import org.apache.james.mime4j.message;
-//import com.amazonaws.services.simpleemailv2.model.RawMessage;
-//import software.amazon.awssdk.services.sesv2.model.SendRawEmailRequest;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static software.amazon.awssdk.core.SdkBytes.fromByteArray;
-
-//import com.amazonaws.services.s3.AmazonS3;
-//import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-//import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
-//import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-
-//import java.util.stream.Collectors;
-
-public class Main implements RequestHandler<SNSEvent, Context> {
+import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 
-    //    private AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(REGION).build();
-//    private AmazonSimpleEmailService sesClient = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(REGION).build();
-    private final Region myRegion = Region.of("us-west-2");  // replace with your bucket's region
+/*Keys to form SQS message*/
+enum sqsKeys {
 
+
+    Category, ///*Possible Categories: Spam, Virus, Undeliverable, Unsubscribe, Autoanswer, HL*/
+    S3ObjectLink,// link to email in S3
+    From, //From
+    Subject,
+    MessageID, //Message ID that assign sender
+    Date,
+    InReplyTo //Message ID if email replied to our and this is potencial HL. Using our format
+}
+enum sqsCategories {
+    Spam, Virus, ReportUndeliverable, ReportUnsubscribe, Unsubscribe, Autoanswer, HL, Other
+}
+public class Main implements RequestHandler<SNSEvent, String> {
+
+    /*Define global variables*/
+    /*#######################*/
     private final S3Client s3 = S3Client.create();
     private final SesV2Client ses = SesV2Client.create();
-    private String fromEmail = "jmark_processor@dex.com";  // Change this
+    private String bucketName;
+    private String objectKey;
+    private final String fromEmail = "jmark_processor@dex.com";  // Change this
     private String from;
     private String subject = "";
     private String contentType = "";
-    private JSONArray headers = new JSONArray();
-    private JSONObject parsedSNS;
+    private String messageId = "";
+    private String inReplyTo = "";
+    private String dateParsed = "";
+    private JSONArray headers = new JSONArray(); //for parsing headers
+    private JSONObject parsedSNS; //original event that came from SNS
     private String spamVerdict;
     private String virusVerdict;
     private String spfVerdict;
     private String dkimVerdict;
     private String dmarcVerdict;
-    boolean toForward;
-
+    boolean toForward; //determine if we need to forward email to jmark or this is service email like undeliverables
+    private Map<String, String> sqsNotification = new HashMap<>();
+    private static final String QUEUE_URL = "https://sqs.us-west-2.amazonaws.com/073628739062/AWSEmailProcSQS"; //SQS URL
+    private static final Region region = Region.US_WEST_2;
     /*Keywords definition block*/
     /*Define subject keywords set*/
-    HashSet<String> subjectKeywords = new HashSet<>();
+    HashSet<String> subjectUndeliverableKeywords = new HashSet<>();  //keywords in subject to parse message
+    HashSet<String> subjectAutoanswerKeywords = new HashSet<>();  //keywords in subject to parse message
+    /*End of Global Variables definition*/
+    /*##################################*/
 
     /*Lambda initialization*/
-    public Main() {
-        /*Keywords for subject filtering*/
-        subjectKeywords.add("undeliverable");
-//        subjectKeywords.add("automatique");
-        subjectKeywords.add("not authori");
-        subjectKeywords.add("invalid number");
-//        subjectKeywords.add("out of office");
-//        subjectKeywords.add("automatic reply");
-        subjectKeywords.add("error");
-//        subjectKeywords.add("automatica");
-//        subjectKeywords.add("automatische");
-        subjectKeywords.add("not delivered");
-//        subjectKeywords.add("autoreply");
-        subjectKeywords.add("failure");
-
-
-    }
-
     private void initialize(SNSEvent event) {
         parsedSNS = new JSONObject(event.getRecords().get(0).getSNS().getMessage());
         spamVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("spamVerdict").getString("status");
@@ -103,25 +80,49 @@ public class Main implements RequestHandler<SNSEvent, Context> {
         spfVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("spfVerdict").getString("status");
         dkimVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("dkimVerdict").getString("status");
         dmarcVerdict = parsedSNS.getJSONObject("receipt").getJSONObject("dmarcVerdict").getString("status");
-//        subject = parsedSNS.getJSONObject("mail").getJSONObject("commonHeaders").getString("subject");
         headers = parsedSNS.getJSONObject("mail").getJSONArray("headers");
+        bucketName = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("bucketName");
+        objectKey = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("objectKey");
         for (int i = 0; i<headers.length(); i++){
             JSONObject header = headers.getJSONObject(i);
-            String name = header.getString("name");
+            String name = header.getString("name").toLowerCase();
             String value = header.getString("value");
             switch (name){
-                case "Content-Type":
+                case "content-type":
                     contentType = value;
                     break;
-                case "Subject":
+                case "subject":
                     subject = value;
                     break;
-                case "From":
+                case "from":
                     from = value;
                     break;
-
+                case "message-id":
+                    messageId = value;
+                    break;
+                case "in-reply-to":
+                    inReplyTo = value;
+                    break;
+                case "date":
+                    dateParsed = value;
+                    break;
             }
         }
+
+        /*Keywords for subject filtering*/
+        subjectUndeliverableKeywords.add("undeliverable");
+        subjectUndeliverableKeywords.add("not authori");
+        subjectUndeliverableKeywords.add("invalid number");
+        subjectUndeliverableKeywords.add("error");
+        subjectUndeliverableKeywords.add("not delivered");
+        subjectUndeliverableKeywords.add("failure");
+        subjectAutoanswerKeywords.add("automatique");
+        subjectAutoanswerKeywords.add("out of office");
+        subjectAutoanswerKeywords.add("automatic reply");
+        subjectAutoanswerKeywords.add("automatica");
+        subjectAutoanswerKeywords.add("automatische");
+        subjectAutoanswerKeywords.add("autoreply");
+
 
         toForward = subjectCheckToForward()
                 && contentTypeCheckToForward();
@@ -130,9 +131,40 @@ public class Main implements RequestHandler<SNSEvent, Context> {
     }
     /*End of Lambda initialization*/
 
+    /*Categorize email to send the report to SQS*/
+    /*Working with HashMap 'sqsNotification' which contain email information*/
+    private void sqsCategorize (){
+        String category = "";
+        category = getCategory();
+        sqsNotification.put(sqsKeys.Category.name(), category);
+        sqsNotification.put(sqsKeys.Date.name(), dateParsed);
+        sqsNotification.put(sqsKeys.From.name(), fromEmail);
+        sqsNotification.put(sqsKeys.Subject.name(), subject);
+        sqsNotification.put(sqsKeys.InReplyTo.name(), inReplyTo);
+        sqsNotification.put(sqsKeys.MessageID.name(), messageId);
+        sqsNotification.put(sqsKeys.S3ObjectLink.name(), bucketName + objectKey);
+
+
+        SqsClient sqsClient = SqsClient.builder().region(region).build();
+        try {
+            sqsClient.sendMessage(SendMessageRequest.builder()
+                    .queueUrl(QUEUE_URL)
+                                    .messageBody(new ObjectMapper().writeValueAsString(sqsNotification))
+//                    .messageBody("Hello from AWS SDK for Java v2!")
+                    .delaySeconds(10) // Optional parameter
+                    .build());
+
+            System.out.println("Message sent successfully.");
+        } catch (Exception e) {
+            System.out.println("ERROR Failed to send message: ");
+            e.printStackTrace();
+        }
+
+    }
+    /*End of categorize email*/
 
     @Override
-    public Context handleRequest(SNSEvent event, Context context) {
+    public String handleRequest(SNSEvent event, Context context) {
 
         try {
             initialize(event);
@@ -140,6 +172,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
             System.out.println("ERROR: failure to initialize function");
             e.printStackTrace();
         }
+        sqsCategorize();
 
             /*Check if message meet with forwarding criteria. Proceed with forwarding so*/
             if (toForward) {
@@ -198,7 +231,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
                 }
             }
 
-            return context;
+            return "SQS Testing" + from;
         }
 
         private void forwardEmail (EmailContent emailContent, String from){
@@ -216,38 +249,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
                     .destination(d -> d.toAddresses(toEmail))
                     .build();
             System.out.println(request.toString());
-
-//        System.out.println(request.toString());
-//        System.out.println(request.fromEmailAddress() + request.replyToAddresses().toString());
             ses.sendEmail(request);
-////        SendEmailRequest request = SendEmailRequest.builder()
-////                .fromEmailAddress(fromEmail)
-////                .
-//////                .destination(toEmail)
-////                .rawMessage(RawMessage.builder()
-////                        .data(fromByteArray(emailContentBytes))
-////                        .build())
-////                .build();
-////
-////        ses.sendEmail(request);
-//        SendEmailRequest request = SendEmailRequest.builder()
-//                .destination(Destination.builder().toAddresses(toEmail).build())
-//                .content(
-//                        EmailContent.builder()
-//                                .simple(
-//                                        Message.builder()
-//                                                .body(Body.builder()
-//                                                        .text(Content.builder().charset("UTF-8").data(emailContent).build())
-//                                                        .build())
-//                                                .subject(Content.builder().charset("UTF-8").data("Forwarded Email").build())
-//                                                .build()
-//                                )
-//                                .build()
-//                )
-//                .fromEmailAddress(fromEmail)
-//                .build();
-//
-//        ses.sendEmail(request);
         }
 
         private Part prependValidationResultsToPart (Part part, String validationResults) throws
@@ -263,14 +265,12 @@ public class Main implements RequestHandler<SNSEvent, Context> {
             } else if (part.isMimeType("text/plain")) {
                 System.out.println("We in text/plain");
                 String content = part.getContent().toString();
-//            System.out.println(content);
 
                 part.setContent(validationResults + content, "text/plain");
 
             } else if (part.isMimeType("text/html")) {
                 System.out.println("We in text/html");
                 String content = part.getContent().toString();
-//            System.out.println(content);
                 String htmpValidation = validationResults;
                 htmpValidation = htmpValidation.replace("PASS", "<span style=\"color:green\">PASS</span>");
                 htmpValidation = htmpValidation.replace("FAIL ", "<span style=\"color:red\">FAIL</span>");
@@ -289,22 +289,10 @@ public class Main implements RequestHandler<SNSEvent, Context> {
                 Session session = Session.getDefaultInstance(new java.util.Properties());
                 MimeMessage mimeMessage = new MimeMessage(session, rawMessage);
 
-//            Enumeration<Header> headers = mimeMessage.getAllHeaders();
-//            while (headers.hasMoreElements()) {
-//                Header header = headers.nextElement();
-//                System.out.println(header.getName() + ": " + header.getValue());
-//            }
-//            mimeMessage.removeHeader("From");
-//            mimeMessage.removeHeader("Received-SPF:");
-//            mimeMessage.removeHeader("Authentication-Results");
                 mimeMessage.setHeader("Return-Path", "aws_bounces@dex.com");
                 mimeMessage.setSubject("[OrigFrom: " + from + " ] " + mimeMessage.getSubject());
-//            mimeMessage.setHeader("From", fromEmail);
 
-//            mimeMessage.removeHeader("To");
             mimeMessage.setHeader("Reply-To", from);
-//            mimeMessage.setHeader("To", "dexmailchecker-AWSSES@srv1.mail-tester.com");
-//            System.out.println("FROM MIME " + mimeMessage.getHeader("From", null));
 
                 prependValidationResultsToPart(mimeMessage, validationResults);
                 mimeMessage.saveChanges();
@@ -323,7 +311,7 @@ public class Main implements RequestHandler<SNSEvent, Context> {
 
         private boolean subjectCheckToForward () {
 
-            for (String sbj : subjectKeywords
+            for (String sbj : subjectUndeliverableKeywords
             ) {
                 if (subject.toLowerCase().contains(sbj)) {
                     System.out.println("Subject: " + subject);
@@ -342,5 +330,40 @@ public class Main implements RequestHandler<SNSEvent, Context> {
                 return false;
             }
         return true;
+        }
+
+        /*Categorize logic*/
+        private String getCategory(){
+            if (contentType.toLowerCase().contains("report")){
+                if (subject.toLowerCase().contains("unsubscribe")){
+                    return sqsCategories.ReportUnsubscribe.name();
+                } else {
+                    for (String sbj : subjectUndeliverableKeywords
+                    ) {
+                        if (subject.toLowerCase().contains(sbj)) {
+                            return sqsCategories.ReportUndeliverable.name();
+                        }
+                    }
+                }
+            }
+            for (String sbj : subjectAutoanswerKeywords
+            ) {
+                if (subject.toLowerCase().contains(sbj)) {
+                    return sqsCategories.Autoanswer.name();
+                }
+            }
+            if (subject.toLowerCase().contains("unsubscribe")){
+                return sqsCategories.Unsubscribe.name();
+            }
+            if (subject.toLowerCase().contains("re:")){
+                return sqsCategories.HL.name();
+            }
+            if (spamVerdict.toLowerCase().contains("fail")){
+                return sqsCategories.Spam.name();
+            }
+            if (virusVerdict.toLowerCase().contains("fail")){
+                return sqsCategories.Virus.name();
+            }
+            return sqsCategories.Other.name();
         }
     }

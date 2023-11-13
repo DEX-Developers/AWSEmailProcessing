@@ -9,6 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -292,6 +293,9 @@
       <workItem from="1698421579006" duration="2046000" />
       <workItem from="1698438947168" duration="16417000" />
       <workItem from="1698854511433" duration="2787000" />
+      <workItem from="1699630519201" duration="8568000" />
+      <workItem from="1699658501587" duration="1302000" />
+      <workItem from="1699891142595" duration="5099000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
