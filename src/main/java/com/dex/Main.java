@@ -147,7 +147,7 @@ public class Main implements RequestHandler<SNSEvent, String> {
         sqsNotification.put(sqsKeys.Subject.name(), subject);
         sqsNotification.put(sqsKeys.InReplyTo.name(), inReplyTo);
         sqsNotification.put(sqsKeys.MessageID.name(), messageId);
-        sqsNotification.put(sqsKeys.S3ObjectLink.name(), bucketName + objectKey);
+        sqsNotification.put(sqsKeys.S3ObjectLink.name(), bucketName + "/" + objectKey);
 
 
         try (SqsClient sqsClient=SqsClient.builder().region(region).build()){
