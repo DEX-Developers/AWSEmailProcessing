@@ -358,14 +358,14 @@ public class Main implements RequestHandler<SNSEvent, String> {
             if (subject.toLowerCase().contains("unsubscribe")){
                 return sqsCategories.Unsubscribe.name();
             }
-            if (subject.toLowerCase().contains("re:")){
-                return sqsCategories.HL.name();
-            }
             if (spamVerdict.toLowerCase().contains("fail")){
                 return sqsCategories.Spam.name();
             }
             if (virusVerdict.toLowerCase().contains("fail")){
                 return sqsCategories.Virus.name();
+            }
+            if (subject.toLowerCase().contains("re:")){
+                return sqsCategories.HL.name();
             }
             return sqsCategories.Other.name();
         }
