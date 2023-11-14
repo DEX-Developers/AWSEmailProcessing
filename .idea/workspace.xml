@@ -295,7 +295,7 @@
       <workItem from="1699630519201" duration="8568000" />
       <workItem from="1699658501587" duration="1302000" />
       <workItem from="1699891142595" duration="5099000" />
-      <workItem from="1699975998524" duration="6601000" />
+      <workItem from="1699975998524" duration="11362000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -374,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699988213673</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Minor fixed in SQS result output">
+      <created>1699990661924</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1699990661924</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -414,6 +421,7 @@
     <MESSAGE value="Fixed from field in SQS. Put customer one instead of jmark_processor@dex.com" />
     <MESSAGE value="Move HL after virus and spam check to exclude spam and viruses from HL processing" />
     <MESSAGE value="Create separated queue for spam and virus separation for learning purposes about how AWS spam and virus detection working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create separated queue for spam and virus separation for learning purposes about how AWS spam and virus detection working" />
+    <MESSAGE value="Minor fixed in SQS result output" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor fixed in SQS result output" />
   </component>
 </project>
