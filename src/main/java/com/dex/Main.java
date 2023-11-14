@@ -287,7 +287,7 @@ public class Main implements RequestHandler<SNSEvent, String> {
         }
 
         private byte[] prependValidationResults (InputStream rawMessage, String validationResults){
-            try {
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
                 Session session = Session.getDefaultInstance(new java.util.Properties());
                 MimeMessage mimeMessage = new MimeMessage(session, rawMessage);
 
@@ -299,8 +299,9 @@ public class Main implements RequestHandler<SNSEvent, String> {
                 prependValidationResultsToPart(mimeMessage, validationResults);
                 mimeMessage.saveChanges();
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
                 mimeMessage.writeTo(baos);
+
                 return baos.toByteArray();
             } catch (Exception e) {
                 System.out.println("ERROR: Failed to parse raw message");
