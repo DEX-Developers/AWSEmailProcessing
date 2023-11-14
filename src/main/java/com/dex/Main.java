@@ -68,6 +68,7 @@ public class Main implements RequestHandler<SNSEvent, String> {
     boolean toForward; //determine if we need to forward email to jmark or this is service email like undeliverables
     private Map<String, String> sqsNotification = new HashMap<>();
     private static final String QUEUE_URL = "https://sqs.us-west-2.amazonaws.com/073628739062/AWSEmailProcSQS"; //SQS URL
+    private static final String SPAM_QUEUE_URL = "https://sqs.us-west-2.amazonaws.com/073628739062/AWSEmailProcSQS"; // URL to send SPAMS
     private static final Region region = Region.US_WEST_2;
     /*Keywords definition block*/
     /*Define subject keywords set*/
@@ -149,9 +150,8 @@ public class Main implements RequestHandler<SNSEvent, String> {
         sqsNotification.put(sqsKeys.S3ObjectLink.name(), bucketName + objectKey);
 
 
-        SqsClient sqsClient = SqsClient.builder().region(region).build();
-        try {
-            System.out.println("Check SQS creation: " + new ObjectMapper().writeValueAsString(sqsNotification));
+        try (SqsClient sqsClient=SqsClient.builder().region(region).build()){
+//            System.out.println("Check SQS creation: " + new ObjectMapper().writeValueAsString(sqsNotification));
             sqsClient.sendMessage(SendMessageRequest.builder()
                     .queueUrl(QUEUE_URL)
                                     .messageBody(new ObjectMapper().writeValueAsString(sqsNotification))
@@ -159,7 +159,15 @@ public class Main implements RequestHandler<SNSEvent, String> {
                     .delaySeconds(10) // Optional parameter
                     .build());
 
-            System.out.println("Message sent successfully.");
+            if (spamVerdict.toLowerCase().contains("fail")||virusVerdict.toLowerCase().contains("fail")){
+                sqsClient.sendMessage(SendMessageRequest.builder()
+                        .queueUrl(SPAM_QUEUE_URL)
+                        .messageBody(new ObjectMapper().writeValueAsString(sqsNotification))
+                        .delaySeconds(10)
+                        .build());
+            }
+
+            System.out.println("Messages sent successfully.");
         } catch (Exception e) {
             System.out.println("ERROR Failed to send message: ");
             e.printStackTrace();

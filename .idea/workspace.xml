@@ -295,7 +295,7 @@
       <workItem from="1699630519201" duration="8568000" />
       <workItem from="1699658501587" duration="1302000" />
       <workItem from="1699891142595" duration="5099000" />
-      <workItem from="1699975998524" duration="4203000" />
+      <workItem from="1699975998524" duration="5226000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -353,7 +353,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699978483344</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Fixed from field in SQS. Put customer one instead of jmark_processor@dex.com">
+      <created>1699987309001</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1699987309001</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Move HL after virus and spam check to exclude spam and viruses from HL processing">
+      <created>1699987602714</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1699987602714</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -390,6 +404,8 @@
     <MESSAGE value="Optimize imports" />
     <MESSAGE value="Fixed memory leaking error" />
     <MESSAGE value="Fixed memory leaking error - baos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed memory leaking error - baos" />
+    <MESSAGE value="Fixed from field in SQS. Put customer one instead of jmark_processor@dex.com" />
+    <MESSAGE value="Move HL after virus and spam check to exclude spam and viruses from HL processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move HL after virus and spam check to exclude spam and viruses from HL processing" />
   </component>
 </project>
