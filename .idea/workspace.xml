@@ -8,6 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -294,7 +295,7 @@
       <workItem from="1699630519201" duration="8568000" />
       <workItem from="1699658501587" duration="1302000" />
       <workItem from="1699891142595" duration="5099000" />
-      <workItem from="1699975998524" duration="2121000" />
+      <workItem from="1699975998524" duration="4203000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -338,7 +339,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699977393994</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fixed memory leaking error">
+      <created>1699978320716</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1699978320716</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed memory leaking error - baos">
+      <created>1699978483344</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1699978483344</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,6 +388,8 @@
     <MESSAGE value="Minor logging updates" />
     <MESSAGE value="Exclude autoanswers from keyword list" />
     <MESSAGE value="Optimize imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimize imports" />
+    <MESSAGE value="Fixed memory leaking error" />
+    <MESSAGE value="Fixed memory leaking error - baos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed memory leaking error - baos" />
   </component>
 </project>

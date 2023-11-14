@@ -142,7 +142,7 @@ public class Main implements RequestHandler<SNSEvent, String> {
         category = getCategory();
         sqsNotification.put(sqsKeys.Category.name(), category);
         sqsNotification.put(sqsKeys.Date.name(), dateParsed);
-        sqsNotification.put(sqsKeys.From.name(), fromEmail);
+        sqsNotification.put(sqsKeys.From.name(), from);
         sqsNotification.put(sqsKeys.Subject.name(), subject);
         sqsNotification.put(sqsKeys.InReplyTo.name(), inReplyTo);
         sqsNotification.put(sqsKeys.MessageID.name(), messageId);
@@ -151,6 +151,7 @@ public class Main implements RequestHandler<SNSEvent, String> {
 
         SqsClient sqsClient = SqsClient.builder().region(region).build();
         try {
+            System.out.println("Check SQS creation: " + new ObjectMapper().writeValueAsString(sqsNotification));
             sqsClient.sendMessage(SendMessageRequest.builder()
                     .queueUrl(QUEUE_URL)
                                     .messageBody(new ObjectMapper().writeValueAsString(sqsNotification))
@@ -223,7 +224,6 @@ public class Main implements RequestHandler<SNSEvent, String> {
 
 
                     // Forward email using SES v2
-//            forwardEmail(emailContent);
                     if (toForward) {
                         forwardEmail(rawContent, from);
                     }
