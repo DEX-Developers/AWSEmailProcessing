@@ -187,9 +187,9 @@ public class Main implements RequestHandler<SNSEvent, String> {
                 System.out.println(event.getRecords().get(0).getSNS().getMessage());
 
 //        JSONObject parsedSNS = new JSONObject(event.getRecords().get(0).getSNS().getMessage());
-                System.out.println(parsedSNS.getJSONObject("mail").getString("messageId"));
-                String bucketName = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("bucketName");
-                String objectKey = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("objectKey");
+//                System.out.println(parsedSNS.getJSONObject("mail").getString("messageId"));
+//                String bucketName = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("bucketName");
+//                String objectKey = parsedSNS.getJSONObject("receipt").getJSONObject("action").getString("objectKey");
 
 
 //                from = parsedSNS.getJSONObject("mail").getJSONObject("commonHeaders").getJSONArray("from").toList().get(0).toString();
@@ -200,11 +200,9 @@ public class Main implements RequestHandler<SNSEvent, String> {
                         "DKIM: " + dkimVerdict + " \r\n" +
                         "DMARC: " + dmarcVerdict + " \r\n" +
                         "====================================================================\r\n");
-
-                try {
+                GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectKey).build();
+                try (InputStream is = s3.getObject(getObjectRequest)) {
                     // Fetch email content from S3
-                    GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectKey).build();
-                    InputStream is = s3.getObject(getObjectRequest);
                     byte[] emailContentBytes = prependValidationResults(is, prependVerdicts);
                     if (emailContentBytes == null) {
                         emailContentBytes = is.readAllBytes();
