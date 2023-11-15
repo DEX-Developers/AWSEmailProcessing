@@ -9,6 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/.aws-sam/build/Function/com/dex/sqsCategories.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/.aws-sam/build/Function/com/dex/sqsCategories.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -295,7 +296,8 @@
       <workItem from="1699630519201" duration="8568000" />
       <workItem from="1699658501587" duration="1302000" />
       <workItem from="1699891142595" duration="5099000" />
-      <workItem from="1699975998524" duration="11362000" />
+      <workItem from="1699975998524" duration="11877000" />
+      <workItem from="1700062151118" duration="1734000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -381,7 +383,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699990661924</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add comments">
+      <created>1700005627351</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1700005627351</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -422,6 +431,7 @@
     <MESSAGE value="Move HL after virus and spam check to exclude spam and viruses from HL processing" />
     <MESSAGE value="Create separated queue for spam and virus separation for learning purposes about how AWS spam and virus detection working" />
     <MESSAGE value="Minor fixed in SQS result output" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor fixed in SQS result output" />
+    <MESSAGE value="Add comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add comments" />
   </component>
 </project>

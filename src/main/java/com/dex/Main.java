@@ -125,17 +125,30 @@ public class Main implements RequestHandler<SNSEvent, String> {
 
         /*Keywords for subject filtering - Autoanswers and Undeliverables*/
         subjectUndeliverableKeywords.add("undeliverable");
+        subjectUndeliverableKeywords.add("not deliverable");
+        subjectUndeliverableKeywords.add("unzustellbar");
         subjectUndeliverableKeywords.add("not authori");
         subjectUndeliverableKeywords.add("invalid number");
         subjectUndeliverableKeywords.add("error");
         subjectUndeliverableKeywords.add("not delivered");
         subjectUndeliverableKeywords.add("failure");
+        subjectUndeliverableKeywords.add("failed");
+        subjectUndeliverableKeywords.add("returned mail");
+        subjectUndeliverableKeywords.add("non remis");
+        subjectUndeliverableKeywords.add("ão entregue");
+        subjectUndeliverableKeywords.add("mail returned");
+        subjectUndeliverableKeywords.add("配信不能");
+        subjectUndeliverableKeywords.add("배달되지 않음");
         subjectAutoanswerKeywords.add("automatique");
+        subjectAutoanswerKeywords.add("自动答复");
+        subjectAutoanswerKeywords.add("domain update");
+        subjectAutoanswerKeywords.add("automática");
         subjectAutoanswerKeywords.add("out of office");
         subjectAutoanswerKeywords.add("automatic reply");
         subjectAutoanswerKeywords.add("automatica");
         subjectAutoanswerKeywords.add("automatische");
         subjectAutoanswerKeywords.add("autoreply");
+        subjectAutoanswerKeywords.add("we have moved");
         /*End of subject keywords definition*/
 
         /*Determine if message must forward to jmark*/
