@@ -9,7 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3467a745-f0e0-4f6b-bac1-7b46949358c6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/.aws-sam/build/Function/com/dex/sqsCategories.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/.aws-sam/build/Function/com/dex/sqsCategories.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dex/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +102,7 @@
       <recent name="C:\Users\apikhtovnikov\IdeaProjects\AWSEmailProcessing\AWSEmailProcessingFn" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.AWSEmailProcessing [init]">
+  <component name="RunManager" selected="AWS Lambda.[Local] Main.handleRequest">
     <configuration name="AWSEmailProcessing [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -297,7 +296,10 @@
       <workItem from="1699658501587" duration="1302000" />
       <workItem from="1699891142595" duration="5099000" />
       <workItem from="1699975998524" duration="11877000" />
-      <workItem from="1700062151118" duration="1734000" />
+      <workItem from="1700062151118" duration="2767000" />
+      <workItem from="1700091126357" duration="28000" />
+      <workItem from="1700091174071" duration="410000" />
+      <workItem from="1700091604721" duration="1077000" />
     </task>
     <task id="LOCAL-00001" summary="Optimized imports">
       <created>1698442388769</created>
@@ -390,7 +392,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700005627351</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Update keywords">
+      <created>1700064181360</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1700064181360</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,6 +441,7 @@
     <MESSAGE value="Create separated queue for spam and virus separation for learning purposes about how AWS spam and virus detection working" />
     <MESSAGE value="Minor fixed in SQS result output" />
     <MESSAGE value="Add comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add comments" />
+    <MESSAGE value="Update keywords" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update keywords" />
   </component>
 </project>

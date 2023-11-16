@@ -53,9 +53,9 @@ public class Main implements RequestHandler<SNSEvent, String> {
     private static final Region region = Region.US_WEST_2;
     /*Define global variables*/
     /*#######################*/
-    private final S3Client s3 = S3Client.create();
-    private final SesV2Client ses = SesV2Client.create();
-    private final String fromEmail = "jmark_processor@dex.com";  // Change this
+//    private final S3Client s3 = S3Client.create();
+//    private final SesV2Client ses = SesV2Client.create();
+//    private final String fromEmail = "jmark_processor@dex.com";  // Change this
     boolean toForward; //determine if we need to forward email to jmark or this is service email like undeliverables
     /*Keywords definition block*/
     /*Define subject keywords set*/
@@ -228,7 +228,8 @@ public class Main implements RequestHandler<SNSEvent, String> {
 
             GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectKey).build(); //define URL to extract from S3
             /*Extract Email from S3*/
-            try (InputStream is = s3.getObject(getObjectRequest)) {
+            try (S3Client s3 = S3Client.create();
+                    InputStream is = s3.getObject(getObjectRequest)) {
                 // Fetch email content from S3
                 byte[] emailContentBytes = prependValidationResults(is, prependVerdicts);  //call prepend function to add verdicts to the email body
 
@@ -260,22 +261,27 @@ public class Main implements RequestHandler<SNSEvent, String> {
 
     private void forwardEmail(EmailContent emailContent) {
 
-
-        HashSet<String> toEmail = new HashSet<>();    // List of recipients
+        try (SesV2Client ses = SesV2Client.create()) {
+            String fromEmail = "jmark_processor@dex.com";  // Change this
+            HashSet<String> toEmail = new HashSet<>();    // List of recipients
 //        toEmail.add("dexmailchecker-AWSSES@srv1.mail-tester.com");
-        toEmail.add("jmark@dex.com");
-        toEmail.add("apikhtovnikov@dex.com");
+            toEmail.add("jmark@dex.com");
+            toEmail.add("apikhtovnikov@dex.com");
 
-        /*Build up sending request*/
-        SendEmailRequest request = SendEmailRequest.builder()
-                .content(emailContent)
-                .feedbackForwardingEmailAddress("aws_bounces@dex.com")
+            /*Build up sending request*/
+            SendEmailRequest request = SendEmailRequest.builder()
+                    .content(emailContent)
+                    .feedbackForwardingEmailAddress("aws_bounces@dex.com")
 //                .replyToAddresses(from)
-                .fromEmailAddress(fromEmail)
-                .destination(d -> d.toAddresses(toEmail))
-                .build();
-        System.out.println(request.toString());
-        ses.sendEmail(request);
+                    .fromEmailAddress(fromEmail)
+                    .destination(d -> d.toAddresses(toEmail))
+                    .build();
+            System.out.println(request.toString());
+            ses.sendEmail(request);
+        } catch (Exception e){
+            System.out.println("ERROR in forwardEmail method");
+            e.printStackTrace();
+        }
     }
 
     /*Check and prepend validation result if body part is text or html. Ignore in other cases*/
